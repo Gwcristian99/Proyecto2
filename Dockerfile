@@ -1,12 +1,37 @@
-from php:8.2-apache
+FROM php:8.2-apache
 
-copy . /var/www/html/
 
-copy .htaccess /var/www/html/ .htaccess
 
-run chown -R www-data:www-data /var/www/html \
-    && chown -R 755 /var/www/html
+# Crea el directorio} si no existe (previene el error de /var/www/html not found)
 
-run docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+RUN mkdir -p /var/www/html
 
-expose 80  
+
+
+# Copia todos los archivos del proyecto
+
+COPY . /var/www/html/
+
+
+
+# Copia el archivo .htaccess (si existe)
+
+COPY .htaccess /var/www/html/.htaccess
+
+
+
+# Da permisos correctos a los archivos
+
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+
+
+
+# Instala y habilita mysqli (para conexión a base de datos)
+
+RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+
+
+
+# Expone el puerto 80
+
+EXPOSE 80
