@@ -14,12 +14,6 @@ COPY . /var/www/html/
 
 
 
-# Copia el archivo .htaccess (si existe)
-
-COPY .htaccess /var/www/html/.htaccess
-
-
-
 # Da permisos correctos a los archivos
 
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
